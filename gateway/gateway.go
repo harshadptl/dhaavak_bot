@@ -1,28 +1,31 @@
 package gateway
 
+import "log"
+
 type Gateway interface {
-    Execute(Message string) error
+	Execute(Message string) error
 }
 
 type SessionMessage struct {
-    SessionID string
-    Message string
-  }
+	SessionID string
+	Message   string
+}
 type SessionRouter interface {
-    Serve(s SessionMessage) error
+	Serve(s SessionMessage) error
 }
 
 type LaneQueue struct {
-    Queue map[string]chan[string]
+	Queue map[string]chan string
 }
 
 func (lq *LaneQueue) Loop() {
-    for id, c := range lq.Queue {
-        select {
-            case msg := <- c:
-                // Agent Runner
-            default:
-               // do nothing
-        }
-    }
+	for id, c := range lq.Queue {
+		select {
+		case msg := <-c:
+			log.Println("Received message for session", id, ":", msg)
+			// Agent Runner
+		default:
+			// do nothing
+		}
+	}
 }
