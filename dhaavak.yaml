@@ -1,0 +1,38 @@
+server:
+  host: "127.0.0.1"
+  port: 18789
+
+auth:
+  token: "" # Set for WebSocket auth, or leave empty for no auth
+
+llm:
+  provider: anthropic
+  api_key: "${ANTHROPIC_API_KEY}"
+  model: claude-sonnet-4-5-20250929
+  max_turns: 25
+
+agents:
+  - id: default
+    name: Dhaavak
+    system_prompt: |
+      You are Dhaavak, a helpful AI assistant. Be concise and helpful.
+
+channels:
+  telegram:
+    enabled: true
+    bot_token: "${TELEGRAM_BOT_TOKEN}"
+    default_agent: default
+    dm_policy: open       # open | allowlist | disabled
+    group_policy: mention  # mention | all | disabled
+    allowed_users: []
+    allowed_groups: []
+
+session:
+  ttl: 30m
+  cleanup_interval: 5m
+  max_history: 100
+
+queue:
+  buffer_size: 64
+  idle_timeout: 10m
+  cleanup_interval: 2m
